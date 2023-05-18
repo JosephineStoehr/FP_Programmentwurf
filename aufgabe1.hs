@@ -54,7 +54,7 @@ module Aufgabe1 where
     -}
     generateCompleteAssignmentTable :: [School] -> [Student] -> [Int] -> [Assignment]-> [Assignment]
     generateCompleteAssignmentTable _ _ [] currentAssignment = currentAssignment
-    generateCompleteAssignmentTable schools students (x:xs) currentAssignment = generateCompleteAssignmentTable schools students xs (generateAssignmentsForAllSchoolsOnPreference schools students x currentAssignment)
+    generateCompleteAssignmentTable schools students (x:xs) currentAssignment = generateCompleteAssignmentTable schools students xs (assignAll schools students x currentAssignment)
 
     {-
     Argumente: Liste aller Schulen, Liste von Schülern, zu betrachtende Präferenz (0, 1 oder 2), aktuelle Zuweisung aller Schulen
@@ -64,8 +64,8 @@ module Aufgabe1 where
         -es werden alle bereits zugewiesenen Schüler herausgefiltert
         -wenn zu einer Schule noch keine Zuweisung existiert, wird eine neue erstellt
     -}
-    generateAssignmentsForAllSchoolsOnPreference :: [School] -> [Student] -> Int -> [Assignment] -> [Assignment]
-    generateAssignmentsForAllSchoolsOnPreference schools students currentPreference currentAssignment = [generateAssignmentForSpecificSchoolAndPreference x (determineUnassignedStudents students currentAssignment) currentPreference (findAssignmentBelongingToSchool x currentAssignment)| x <- schools]
+    assignAll :: [School] -> [Student] -> Int -> [Assignment] -> [Assignment]
+    assignAll schools students currentPreference currentAssignment = [generateAssignment x (determineUnassignedStudents students currentAssignment) currentPreference (findAssignmentsPerSchool x currentAssignment)| x <- schools]
 
     {-
     Argumente: Schule, Liste von Schülern, zu betrachtende Präferenz (0, 1 oder 2), aktuelle Zuweisung zu dieser Schule
@@ -75,43 +75,43 @@ module Aufgabe1 where
         -es wird nur zugewiesen, wenn eine Präferenz für diese Schule auf dem betrachteten Level besteht
         -es wird nur zugewiesen, wenn die Schule nicht voll ist
     -}
-    generateAssignmentForSpecificSchoolAndPreference :: School -> [Student] -> Int -> Assignment -> Assignment
-    generateAssignmentForSpecificSchoolAndPreference _ [] _ assignemnt = assignemnt
-    generateAssignmentForSpecificSchoolAndPreference school (x:xs) preference assignemnt =
-        if doesStudentHavePreference school x preference && not (isSchoolFull school assignemnt)
-            then generateAssignmentForSpecificSchoolAndPreference school xs preference assignemnt {assignedStudents = assignedStudents assignemnt ++ [nameStudent x]}
-            else generateAssignmentForSpecificSchoolAndPreference school xs preference assignemnt
+    generateAssignment :: School -> [Student] -> Int -> Assignment -> Assignment
+    generateAssignment _ [] _ assignment = assignment
+    generateAssignment school (x:xs) preference assignment =
+        if doesStudentHavePreference school x preference && not (isSchoolFull school assignment)
+            then generateAssignment school xs preference assignment {assignedStudents = assignedStudents assignment ++ [nameStudent x]}
+            else generateAssignment school xs preference assignment
 
      {-
     Argumente: Schule, Liste aller aktuellen Zuweisungen
     Rückgabe: Zuweisungen
     Findet die zu einer Schule zugehörige Zuweisung aus einer Liste von Zuweisungen. Falls keine existiert, wird eine neue erstellt.
     -}
-    findAssignmentBelongingToSchool :: School -> [Assignment] -> Assignment
-    findAssignmentBelongingToSchool school [] = Assignment {assignmentSchoolName = nameSchool school, assignedStudents = []}
-    findAssignmentBelongingToSchool school (x:xs) =
+    findAssignmentsPerSchool :: School -> [Assignment] -> Assignment
+    findAssignmentsPerSchool school [] = Assignment {assignmentSchoolName = nameSchool school, assignedStudents = []}
+    findAssignmentsPerSchool school (x:xs) =
         if nameSchool school == assignmentSchoolName x
             then x
-            else findAssignmentBelongingToSchool school xs
+            else findAssignmentsPerSchool school xs
 
     {-
     Argumente: Liste aller Schüler, Aktuelle Zuweisungen zu allen Schulen
-    Rückgabe: List von Schülern
+    Rückgabe: Liste von Schülern
     Diese Funktion generiert eine Liste aller Schüler, die noch keiner Schule zugewiesen sind
     -}
     determineUnassignedStudents :: [Student] -> [Assignment] -> [Student]
-    determineUnassignedStudents students assignment = [x | x <- students, nameStudent x `notElem` generateListOfAlreadyAssignedStudents assignment]
+    determineUnassignedStudents students assignment = [x | x <- students, nameStudent x `notElem` listAssignedStudents assignment]
 
     {-
     Argumente: Aktuelle Zuweisungen zu allen Schulen
     Rückgabe: String Liste
     Diese Funktion generiert eine Liste mit den Namen von allen Schülern, die bereits zugewiesen wurden
     -}
-    generateListOfAlreadyAssignedStudents :: [Assignment] -> [String]
-    generateListOfAlreadyAssignedStudents = concatMap assignedStudents
+    listAssignedStudents :: [Assignment] -> [String]
+    listAssignedStudents = concatMap assignedStudents
 
     {-
-    Argumente: Schule, Aktuelle Zuweisung zu einer Schule
+    Argumente: Schule, aktuelle Zuweisung zu einer Schule
     Rückgabe: Boolean
     Diese Funktion soll überprüfen, ob eine Schule unter der aktuellen Zuweisung voll ist (bzw. ob sie mit mit einem weiteren Schüler voll wäre) 
     -}
