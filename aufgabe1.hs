@@ -1,21 +1,37 @@
+import Control.Monad ( forM_ )
 data School = School
     {
         nameSchool :: String,
         spots :: Int
-    } deriving (Show, Eq)
+    } deriving (Eq)
+
+instance Show School where
+    show s = "\nSchule: " ++ nameSchool s ++ "\nPlaetze: " ++ show (spots s)
 
 data Student = Student
     {
         nameStudent :: String,
         mark :: Float,
         preferences:: [String]
-    } deriving Show
+    }
+
+instance Show Student where
+    show s = "\nStudent: " ++ nameStudent s ++ "\nNote: " ++ show (mark s) ++ "\nPraeferenzen: " ++ showPreferencList (preferences s) where
+        showPreferencList list = case list of
+            [] -> ""
+            (x:xs) -> x ++ "; " ++ showPreferencList xs
 
 data Assignment = Assignment
     {
         assignmentSchoolName :: String,
         assignedStudents :: [String]
-    } deriving Show
+    }
+    
+instance Show Assignment where
+    show a = "\nSchule:  " ++ assignmentSchoolName a ++ "\nZugewiesene Schueler: " ++ showStudentList (assignedStudents a) where
+        showStudentList list = case list of
+            [] -> ""
+            (x:xs) -> x ++ "; " ++ showStudentList xs
 
 sortStudentsByMarks :: [Student] -> [Student]
 sortStudentsByMarks [] = []
@@ -68,5 +84,9 @@ main = do
     --print besetzung1
     --print besetzung2
     --print besetzung3
-    print $ sortStudentsByMarks schuelerListe
-    print $ generateCompleteAssignmentTable schulListe schuelerListe [0,1,2] []
+    putStrLn "\n---------------Liste der Schulen---------------"
+    forM_ schulListe print
+    putStrLn "\n---------------Liste der Schueler---------------"
+    forM_ (sortStudentsByMarks schuelerListe) print
+    putStrLn "\n------------------Ergebnisse-------------------"
+    forM_ (generateCompleteAssignmentTable schulListe schuelerListe [0,1,2] []) print
