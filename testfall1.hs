@@ -23,4 +23,16 @@ main = do
     forM_ (sortStudentsByMarks schuelerListe2) print
     putStrLn "------------------Ergebnisse-------------------\n"
     forM_ (generateCompleteAssignmentTable schulListe1 schuelerListe2 [0,1,2] []) print
-    putStrLn "\n*Zuweisung erfolgt nach Angabe der Praeferenzen, auch wenn Schulen dadurch nicht voll werden."
+    putStrLn "\n*Bei der Zuweisung wird die Reihenfolge der Praeferenzen priorisiert."
+
+        --------------------------------------------------------
+    putStrLn "\n------------Verhalten bei optimalen Bedingungen - 3. Beispiel -----------\n"
+    let schuelerListe3 = [(Student {nameStudent="Emilie", mark=1.0, preferences = ["HWR", "HTW", "TH Wildau"]}),(Student {nameStudent="Clemens", mark=1.3, preferences = ["HWR", "HTW", "TH Wildau"]}),(Student {nameStudent="Josephine", mark=1.7, preferences = ["HWR", "HTW", "TH Wildau"]})]
+    let schulListe3 = [(School {nameSchool = "HWR", spots = 1}),(School {nameSchool = "HTW", spots = 1 }),(School {nameSchool = "TH Wildau", spots = 1 })]
+    putStrLn "---------------Liste der Schulen---------------\n"
+    forM_ schulListe3 print
+    putStrLn "---------------Liste der Schueler---------------\n"
+    forM_ (sortStudentsByMarks schuelerListe3) print
+    putStrLn "------------------Ergebnisse-------------------\n"
+    forM_ (generateCompleteAssignmentTable schulListe3 schuelerListe3 [0,1,2] []) print
+    putStrLn "\n*Bei der Zuweisung wird die Reihenfolge der Praeferenzen priorisiert, anschließend werden Schueler nach Note priorisiert."
