@@ -42,5 +42,7 @@ main = do
     forM_ (sortStudentsByMarks schuelerListe3) print
     putStrLn "\n------------------Ergebnisse-------------------"
     putStrLn "\n*Programm stuerzt ab :)"
-    forM_ (generateCompleteAssignmentTable schulListe1 schuelerListe2 [0,1,2] []) print
+    forM_ completeAssignment3 print
+    unless (null unassignedStudents3) (putStrLn "\n------------------Nicht Zugewiesene Schüler-------------------")
+    unless (null unassignedStudents3) (forM_ unassignedStudents3 print)
 
