@@ -41,7 +41,6 @@ main = do
     putStrLn "\n---------------Liste der Schueler---------------"
     forM_ (sortStudentsByMarks schuelerListe3) print
     putStrLn "\n------------------Ergebnisse-------------------"
-    putStrLn "\n*Programm stuerzt ab :)"
     forM_ completeAssignment3 print
     unless (null unassignedStudents3) (putStrLn "\n------------------Nicht Zugewiesene Schüler-------------------")
     unless (null unassignedStudents3) (forM_ unassignedStudents3 print)
