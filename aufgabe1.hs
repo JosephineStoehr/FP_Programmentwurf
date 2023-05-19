@@ -8,7 +8,7 @@ module Aufgabe1 where
         } deriving (Eq)
 
     instance Show School where
-        show s = "\nSchule: " ++ nameSchool s ++ "\nPlaetze: " ++ show (spots s)
+        show s = "Schule: " ++ nameSchool s ++ "\nPlaetze: " ++ show (spots s) ++ "\n"
 
     data Student = Student
         {
@@ -18,7 +18,7 @@ module Aufgabe1 where
         }
 
     instance Show Student where
-        show s = "\nStudent: " ++ nameStudent s ++ "\nNote: " ++ show (mark s) ++ "\nPraeferenzen: " ++ showPreferencList (preferences s) where
+        show s = "Student: " ++ nameStudent s ++ "\nNote: " ++ show (mark s) ++ "\nPraeferenzen: " ++ showPreferencList (preferences s) ++ "\n" where
             showPreferencList list = case list of
                 [] -> ""
                 (x:xs) -> x ++ "; " ++ showPreferencList xs
@@ -30,7 +30,7 @@ module Aufgabe1 where
         }
         
     instance Show Assignment where
-        show a = "\nSchule:  " ++ assignmentSchoolName a ++ "\nZugewiesene Schueler: " ++ showStudentList (assignedStudents a) where
+        show a = "Schule:  " ++ assignmentSchoolName a ++ "\nZugewiesene Schueler: " ++ showStudentList (assignedStudents a) ++ "\n" where
             showStudentList list = case list of
                 [] -> ""
                 (x:xs) -> x ++ "; " ++ showStudentList xs
@@ -45,7 +45,7 @@ module Aufgabe1 where
     sortStudentsByMarks (x:xs) = sortStudentsByMarks smaller  ++ [x] ++ sortStudentsByMarks larger where
         smaller = [s| s <- xs , mark s <= mark x]
         larger = [l | l<- xs , mark l > mark x]
-
+    
     {-
     Argumente: Liste aller Schulen, Liste von Schülern, alle möglichen Präferenzen, alle Zuweisungen (am Anfang leer)
     Rückgabe:  Vollständige Liste aller Zuweisungen
