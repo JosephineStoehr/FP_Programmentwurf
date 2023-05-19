@@ -11,7 +11,7 @@ main = do
     putStrLn "-----------------------------------------------------\n----------------------Randfaelle---------------------\n-----------------------------------------------------\n"
 
     -- Schueler hat weniger als drei Praeferenzen, aber die erste passt
-    putStrLn "\n\n-------Schueler hat weniger als drei Praeferenzen, aber die erste passt-------"
+    putStrLn "\n\n-------Schueler hat weniger als drei Praeferenzen, aber eine der angegebenen kann erfuellt werden.-------"
     let schuelerListe2 = [(Student {nameStudent="Josephine", mark=1.0, preferences = ["TH Wildau", "HWR"]})]
     putStrLn "\n---------------Liste der Schulen---------------"
     forM_ schulListe1 print
@@ -29,6 +29,6 @@ main = do
     putStrLn "\n---------------Liste der Schueler---------------"
     forM_ (sortStudentsByMarks schuelerListe2) print
     putStrLn "\n------------------Ergebnisse-------------------"
-    putStrLn "\n*Programm stuerzt ab :)"
     forM_ (generateCompleteAssignmentTable schulListe1 schuelerListe2 [0,1,2] []) print
+    putStrLn "\n*Schueler wird nicht zugewiesen."
 
