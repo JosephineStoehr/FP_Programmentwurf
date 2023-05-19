@@ -124,4 +124,4 @@ module Aufgabe1 where
     Diese Funktion soll überprüfen, ob ein Schüler eine Schule als bestimmte Präferenz hat    
     -}
     doesStudentHavePreference :: School -> Student -> Int ->  Bool
-    doesStudentHavePreference school students currentPreference = nameSchool school == preferences students!!currentPreference
+    doesStudentHavePreference school student currentPreference = (length (preferences student) - 1 >= currentPreference) && (nameSchool school == preferences student!!currentPreference)
