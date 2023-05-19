@@ -54,7 +54,7 @@ module Aufgabe1 where
     -}
     generateCompleteAssignmentTable :: [School] -> [Student] -> [Int] -> [Assignment]-> [Assignment]
     generateCompleteAssignmentTable _ _ [] currentAssignment = currentAssignment
-    generateCompleteAssignmentTable schools students (x:xs) currentAssignment = generateCompleteAssignmentTable schools students xs (assignAll schools students x currentAssignment)
+    generateCompleteAssignmentTable schools students (x:xs) currentAssignment = generateCompleteAssignmentTable schools students xs (assignAll schools (sortStudentsByMarks students) x currentAssignment)
 
     {-
     Argumente: Liste aller Schulen, Liste von Schülern, zu betrachtende Präferenz (0, 1 oder 2), aktuelle Zuweisung aller Schulen
