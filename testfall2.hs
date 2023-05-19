@@ -23,10 +23,10 @@ main = do
     putStrLn "\n---------------Liste der Schueler---------------"
     forM_ (sortStudentsByMarks schuelerListe2) print
     putStrLn "\n------------------Ergebnisse-------------------"
-    forM_ completeAssignment2 print
-    putStrLn "\n*Die Zuweisung erfolgt wie gewohnt, der Schueler erhaelt einen Platz."
+    forM_ completeAssignment2 print  
     unless (null unassignedStudents2) (putStrLn "\n------------------Nicht Zugewiesene Schüler-------------------")
     unless (null unassignedStudents2) (forM_ unassignedStudents2 print)
+    putStrLn "\n*Die Zuweisung erfolgt wie gewohnt, der Schueler erhaelt einen Platz."
 
     -- Schueler hat zu viele Praeferenzen (und Praeferenz 1-3 sind voll)
     putStrLn "\n\n-Schueler hat zu viele Praeferenzen (und Praeferenz 1-3 voll)-"
@@ -43,9 +43,10 @@ main = do
     forM_ (sortStudentsByMarks schuelerListe3) print
     putStrLn "\n------------------Ergebnisse-------------------"
     forM_ completeAssignment3 print
-    putStrLn "\n*Fuer diesen Schueler kann Wunsch 1 bis 3 nicht realisiert werden. Die vierte Praeferenz wird ignoriert. Der Schueler wird nicht zugewiesen."
     unless (null unassignedStudents3) (putStrLn "\n------------------Nicht Zugewiesene Schüler-------------------")
     unless (null unassignedStudents3) (forM_ unassignedStudents3 print)
+    putStrLn "\n*Fuer diesen Schueler kann Wunsch 1 bis 3 nicht realisiert werden. Die vierte Praeferenz wird ignoriert. Der Schueler wird nicht zugewiesen."
+
 
     -- Schule hat zu wenige Plaetze
     putStrLn "\n\n------------Die Schule hat zu wenige Plaetze-----------"
@@ -61,9 +62,9 @@ main = do
     forM_ (sortStudentsByMarks schuelerListe5) print
     putStrLn "\n------------------Ergebnisse-------------------"
     forM_ completeAssignment5 print
-    putStrLn "\n*Die letzte Person bekommt keinen Platz mehr in der HWR."
     unless (null unassignedStudents5) (putStrLn "\n------------------Nicht Zugewiesene Schüler-------------------")
     unless (null unassignedStudents5) (forM_ unassignedStudents5 print)
+    putStrLn "\n*Die letzte Person bekommt keinen Platz mehr in der HWR."
 
 
     --Die praeferierte Schule ist falsch geschrieben
@@ -80,6 +81,44 @@ main = do
     forM_ (sortStudentsByMarks schuelerListe6) print
     putStrLn "\n------------------Ergebnisse-------------------"
     forM_ completeAssignment6 print
-    putStrLn "\n*Es erfolgt keine Zuweisung.\n"
     unless (null unassignedStudents6) (putStrLn "\n------------------Nicht Zugewiesene Schüler-------------------")
     unless (null unassignedStudents6) (forM_ unassignedStudents6 print)
+    putStrLn "\n*Es erfolgt keine Zuweisung.\n"
+
+
+    -- Schueler hat weniger als drei Praeferenzen, aber die erste passt
+    putStrLn "\n\n-------Schueler hat weniger als drei Praeferenzen, aber eine der angegebenen kann erfuellt werden.-------"
+    let schulListe2 = [(School {nameSchool = "HWR", spots = 2}),(School {nameSchool = "HTW", spots = 3 }),(School {nameSchool = "TH Wildau", spots = 10 })]
+    let schuelerListe2 = [(Student {nameStudent="Josephine", mark=1.0, preferences = ["TH Wildau", "HWR"]})]
+
+    let completeAssignment2 = generateCompleteAssignmentTable schulListe2 schuelerListe2 [0,1,2] []
+    let unassignedStudents2 = determineUnassignedStudents schuelerListe2 completeAssignment2
+
+    putStrLn "\n---------------Liste der Schulen---------------"
+    forM_ schulListe2 print
+    putStrLn "\n---------------Liste der Schueler---------------"
+    forM_ (sortStudentsByMarks schuelerListe2) print
+    putStrLn "\n------------------Ergebnisse-------------------"
+    forM_ completeAssignment2 print
+    unless (null unassignedStudents2) (putStrLn "\n------------------Nicht Zugewiesene Schüler-------------------")
+    unless (null unassignedStudents2) (forM_ unassignedStudents2 print)
+    putStrLn "\n*Die Zuweisung erfolgt wie gewohnt."
+
+
+    --Schueler hat zu wenige Praeferenzen und keine passt
+    putStrLn "\n\n-------Schueler hat zu wenige Praeferenzen und die angegebenen koennen nicht erfuellt werden-------"
+    let schuelerListe3 = [(Student {nameStudent="Josephine", mark=1.0, preferences = []})]
+    let schulListe3 = [(School {nameSchool = "HWR", spots = 2}),(School {nameSchool = "HTW", spots = 3 }),(School {nameSchool = "TH Wildau", spots = 10 })]
+
+    let completeAssignment3 = generateCompleteAssignmentTable schulListe3 schuelerListe3 [0,1,2] []
+    let unassignedStudents3 = determineUnassignedStudents schuelerListe3 completeAssignment3
+
+    putStrLn "\n---------------Liste der Schulen---------------"
+    forM_ schulListe3 print
+    putStrLn "\n---------------Liste der Schueler---------------"
+    forM_ (sortStudentsByMarks schuelerListe3) print
+    putStrLn "\n------------------Ergebnisse-------------------"
+    forM_ completeAssignment3 print
+    unless (null unassignedStudents3) (putStrLn "\n------------------Nicht Zugewiesene Schüler-------------------")
+    unless (null unassignedStudents3) (forM_ unassignedStudents3 print)
+    putStrLn "\n*Es erfolgt keine Zuweisung, weil die Schulen nicht als Präferenz angegeben wurden.\n"
